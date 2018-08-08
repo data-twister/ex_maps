@@ -1,7 +1,7 @@
 defmodule GoogleMaps.Mixfile do
   use Mix.Project
 
-  @version File.read!("VERSION") |> String.strip
+  @version File.read!("VERSION") |> String.trim
 
   def project do
     [app: :google_maps,
@@ -11,14 +11,24 @@ defmodule GoogleMaps.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps(),
-     package: package()]
+     package: package(),
+
+     # Docs
+     name: "GoogleMaps",
+     source_url: "https://github.com/sntran/ex_maps",
+     homepage_url: "https://hex.pm/packages/google_maps/",
+     docs: docs()
+    ]
   end
 
   # Configuration for the OTP application
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :httpoison]]
+    [
+      applications: [:logger, :httpoison],
+      env: [requester: HTTPoison]
+    ]
   end
 
   # Dependencies can be Hex packages:
@@ -32,8 +42,8 @@ defmodule GoogleMaps.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:poison, "~> 2.0 or ~> 3.0"},
-      {:httpoison, "~> 0.13"},
+      {:httpoison, "~> 1.2"},
+      {:jason, "~> 1.1"},
       {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end
@@ -43,5 +53,12 @@ defmodule GoogleMaps.Mixfile do
      maintainers: ["Son Tran-Nguyen"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/sntran/ex_maps"}]
+  end
+
+  defp docs do
+    [
+      main: "GoogleMaps", # The main page in the docs
+      extras: ["README.md"]
+    ]
   end
 end
