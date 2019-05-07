@@ -15,7 +15,7 @@ defmodule GoogleMaps.Mixfile do
 
      # Docs
      name: "GoogleMaps",
-     source_url: "https://github.com/sntran/ex_maps",
+     source_url: "https://github.com/mithereal/ex_maps",
      homepage_url: "https://hex.pm/packages/google_maps/",
      docs: docs()
     ]
@@ -26,8 +26,8 @@ defmodule GoogleMaps.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [
-      applications: [:logger, :httpoison],
-      env: [requester: HTTPoison]
+      applications: [:logger, :gun],
+      env: [requester: Gun]
     ]
   end
 
@@ -50,9 +50,9 @@ defmodule GoogleMaps.Mixfile do
 
   defp package do
     [files: ~w(lib mix.exs README.md LICENSE.md VERSION),
-     maintainers: ["Son Tran-Nguyen"],
+     maintainers: ["Jason Clark"],
      licenses: ["MIT"],
-     links: %{"GitHub" => "https://github.com/sntran/ex_maps"}]
+     links: %{"GitHub" => "https://github.com/mithereal/ex_maps"}]
   end
 
   defp docs do
