@@ -6,20 +6,25 @@ defmodule GoogleMaps.Request do
   """
   @spec get(String.t, keyword()) :: GoogleMaps.Response.t
   def get(endpoint, params) do
-    {secure, params} = Keyword.pop(params, :secure, true)
+    {secure, params} = Keyword.pop(params, :secure)
+    {output, params} = Keyword.pop(params, :output, "json")
     {key, params} = Keyword.pop(params, :key, api_key())
     {headers, params} = Keyword.pop(params, :headers, [])
     {options, params} = Keyword.pop(params, :options, [])
 
-    query =
-      (if secure, do: Keyword.put(params, :key, key), else: params)
+    unless is_nil(secure) do
+      IO.puts "`secure` param is deprecated since Google requires request over SSL with API key."
+    end
+
+    query = params
+      |> Keyword.put(:key, key)
       |> Enum.map(&transform_param/1)
       |> URI.encode_query()
 
-    scheme = if secure, do: "https", else: "http"
-    url = "#{scheme}://maps.googleapis.com/maps/api/#{endpoint}/json"
+    url = Path.join("https://maps.googleapis.com/maps/api/#{endpoint}", output)
 
     requester().get("#{url}?#{query}", headers, options)
+    |> format_headers()
   end
 
   # Helpers
@@ -62,4 +67,10 @@ defmodule GoogleMaps.Request do
   end
 
   defp transform_param(param), do: param
+
+  defp format_headers({:ok, %{headers: headers} = response}) do
+    {:ok, %{response | headers: Map.new(headers)}}
+  end
+
+  defp format_headers(error), do: error
 end
