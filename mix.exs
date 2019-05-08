@@ -26,8 +26,8 @@ defmodule GoogleMaps.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [
-      applications: [:logger, :gun],
-      env: [requester: Gun]
+      applications: [:logger, :machine_gun],
+      env: [requester: MachineGun]
     ]
   end
 
@@ -42,7 +42,7 @@ defmodule GoogleMaps.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:gun, "~> 1.3"},
+      {:machine_gun, git: "https://github.com/data-twister/machine_gun.git"},
       {:jason, "~> 1.1"},
       {:ex_doc, ">= 0.0.0", only: :dev}
     ]

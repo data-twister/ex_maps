@@ -69,8 +69,12 @@ defmodule GoogleMaps.Request do
   defp transform_param(param), do: param
 
   defp format_headers({:ok, %{headers: headers} = response}) do
-    {:ok, %{response | headers: Map.new(headers)}}
+   {:ok, %{response | headers: Map.new(headers)}}
   end
+
+  defp format_headers!({:ok, %{headers: headers} = response}) do
+    {:ok, %{response | headers: Map.new(headers)}}
+   end
 
   defp format_headers(error), do: error
 end
